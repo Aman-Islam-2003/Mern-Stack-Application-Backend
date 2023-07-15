@@ -8,8 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path  from "path";
 import { fileURLToPath } from "url";
-import router from ("./routes");
-
+import authRoutes from ("./routes/Auth");
+import userRoutes from ("./routes/user");
 //configurations
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,8 +26,8 @@ app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
 //routes
- app.use("/",router);
-  
+ app.use("/auth",authRoutes);
+ app.use("/user",userRoutes); 
 //file storage
 const storage = multer.diskStorage({
     destination: function(req, file, cb){

@@ -43,10 +43,11 @@ module.exports = {
             return  res.status(400).json({msg: "Invalid credentials"});
          }
 
-        const token = jwt.sign({})
-
+         const token = await jwt.sign({id:user._id}, process.env.JWT_SECRET);
+         delete user.password; //keep it save and dont send it to frontend
+         res.status(200).json({token, user});
         }catch (err){
-
+            res.status(500).json({error: err.message});
         }
 
     }
