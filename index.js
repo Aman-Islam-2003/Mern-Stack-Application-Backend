@@ -10,6 +10,9 @@ import path  from "path";
 import { fileURLToPath } from "url";
 import authRoutes from ("./routes/Auth");
 import userRoutes from ("./routes/user");
+import postRoutes from ("./routes/post");
+import {register} from "./controllers/Auth";
+import {createPost} from "./controllers/posts";
 //configurations
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,9 +28,7 @@ app.use(bodyParser.urlencoded({limit:"30mb", extended: true}));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
-//routes
- app.use("/auth",authRoutes);
- app.use("/user",userRoutes); 
+
 //file storage
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
@@ -38,3 +39,10 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({storage});
+
+app.post("/register", upload.single("picture"), register);
+app.post("/posts", upload.single("picture"), createPost);
+//routes
+ app.use("/auth",authRoutes);
+ app.use("/user",userRoutes); 
+ app.use("/posts",postRoutes); 
